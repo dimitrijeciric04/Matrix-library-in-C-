@@ -2,25 +2,28 @@
 #include "matrix.h"
 using namespace std;
 
+int random_number(){return rand() % 1000;}
+
 int main(){
 
-	int n, m;
-	cin >> n >> m;
+	auto t1 = chrono::high_resolution_clock::now();
 
-	vector<vector<int>> m1(n, vector<int>(m, 0)), m2(n, vector<int>(m, 0));
+	int n = 20, m = 20;
+	vector<vector<int>> v1(n, vector<int>(m)), v2(n, vector<int>(m));
+	srand(time(NULL));
 	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			cin >> m1[i][j];
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			cin >> m2[i][j];
+		for (int j = 0; j < m; j++){
+			v1[i][j] = random_number();
+			v2[i][j] = random_number();
+		}
 
-
-	matrix a(m1), b(m2), c(n, m, 0);
+	matrix a(v1), b(v2);
 	a *= b;
-	a[0][0] = 1;
-	cout << a[0][0] << endl;
-	a.print();
+	//a.print();
+
+	auto t2 = chrono::high_resolution_clock::now();
+	cout << chrono::duration_cast<std::chrono::microseconds>( t2 - t1).count() << endl;
+	//average time is 350 microseconds
 
 	return 0;
 }
