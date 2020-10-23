@@ -22,7 +22,7 @@ int main(){
 	//a.print();
 
 	auto t2 = chrono::high_resolution_clock::now();
-	cout << chrono::duration_cast<std::chrono::microseconds>( t2 - t1).count() << endl;
+	cout << chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() << endl;
 	//average time is 350 microseconds
 
 	return 0;
