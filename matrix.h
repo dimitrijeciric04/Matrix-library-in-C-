@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 #include <vector>
 
 class matrix{
@@ -70,10 +71,26 @@ public:
 				this->mat[i][j] *= x;
 		return this->mat;
 	}
+private:
+	static void process(matrix &new_mat, matrix &a, matrix &b, int i, int n, int m){
+		int tmp;
+		for (int j = 0; j < n; j++){
+			tmp = 0;
+			for (int k = 0; k < m; k++)
+				tmp += a[i][k] * b[k][j];
+			new_mat[i][j] = tmp;
+		}
+	}
+public:
 	matrix operator*(matrix &x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
-		matrix new_mat(this->n, x.m);
+		matrix new_mat(this->n, x.m), tmp_mat(this->mat);
+		std::vector<std::thread> threads(this->n);
+		for (int i = 0; i < this->n; i++)
+			threads[i] = std::thread(std::ref(process), std::ref(new_mat), 
+				std::ref(tmp_mat), std::ref(x), i, x.m, this->m);
+		/*
 		int tmp;
 		for (int i = 0; i < new_mat.n; i++)
 			for (int j = 0; j < new_mat.m; j++){
@@ -82,12 +99,20 @@ public:
 					tmp += this->mat[i][k] * x[k][j];
 				new_mat[i][j] = tmp;
 			}
+		*/
+		for (int i = 0; i < this->n; i++)
+			threads[i].join();
 		return new_mat;
 	}
 	matrix operator*=(matrix &x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
-		matrix new_mat(this->n, x.m, 0);
+		matrix new_mat(this->n, x.m, 0), tmp_mat(this->mat);
+		std::vector<std::thread> threads(this->n);
+		for (int i = 0; i < this->n; i++)
+			threads[i] = std::thread(std::ref(process), std::ref(new_mat), 
+				std::ref(tmp_mat), std::ref(x), i, x.m, this->m);
+		/*
 		int tmp;
 		for (int i = 0; i < new_mat.n; i++)
 			for (int j = 0; j < new_mat.m; j++){
@@ -96,6 +121,9 @@ public:
 					tmp += this->mat[i][k] * x[k][j];
 				new_mat[i][j] = tmp;
 			}
+		*/
+		for (int i = 0; i < this->n; i++)
+			threads[i].join();
 		this->m = x.m;
 		this->mat.resize(this->n, std::vector<int>(this->m));
 		for (int i = 0; i < this->n; i++)
