@@ -18,6 +18,8 @@ int main(){
 
 	matrix a(m1), b(m2), c(n, m, 0);
 	a *= b;
+	a[0][0] = 1;
+	cout << a[0][0] << endl;
 	a.print();
 
 	return 0;
