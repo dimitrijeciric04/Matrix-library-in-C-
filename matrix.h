@@ -36,37 +36,41 @@ public:
 				this->mat[i][j] = x.mat[i][j];
 		return this->mat;
 	}
-	matrix operator+(const matrix &x){
+	std::vector<int>& operator[](const unsigned int &x){
+		if (x > this->n) throw "Index is too big";
+		return this->mat[x];
+	}
+	matrix operator+(matrix &x){
 		if (this->n != x.n || this->m != x.m)
 			throw "You can not add matrices with different size\n";
 		matrix new_mat(this->n, this->m);
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
-				new_mat.mat[i][j] = x.mat[i][j] + this->mat[i][j];
+				new_mat[i][j] = this->mat[i][j] + x[i][j];
 		return new_mat;
 	}
-	matrix operator+=(const matrix &x){
+	matrix operator+=(matrix &x){
 		if (this->n != x.n || this->m != x.m)
 			throw "You can not add matrices with different size\n";
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
-				this->mat[i][j] += x.mat[i][j];
+				this->mat[i][j] += x[i][j];
 		return this->mat;
 	}
-	matrix operator*(const int x){
+	matrix operator*(int x){
 		matrix new_mat(this->n, this->m);
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
-				new_mat.mat[i][j] = this->mat[i][j] * x;
+				new_mat[i][j] = this->mat[i][j] * x;
 		return new_mat;
 	}
-	matrix operator*=(const int x){
+	matrix operator*=(int x){
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				this->mat[i][j] *= x;
 		return this->mat;
 	}
-	matrix operator*(const matrix &x){
+	matrix operator*(matrix &x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
 		matrix new_mat(this->n, x.m);
@@ -75,12 +79,12 @@ public:
 			for (int j = 0; j < new_mat.m; j++){
 				tmp = 0;
 				for (int k = 0; k < this->m; k++)
-					tmp += this->mat[i][k] * x.mat[k][j];
-				new_mat.mat[i][j] = tmp;
+					tmp += this->mat[i][k] * x[k][j];
+				new_mat[i][j] = tmp;
 			}
 		return new_mat;
 	}
-	matrix operator*=(const matrix &x){
+	matrix operator*=(matrix &x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
 		matrix new_mat(this->n, x.m, 0);
@@ -89,14 +93,14 @@ public:
 			for (int j = 0; j < new_mat.m; j++){
 				tmp = 0;
 				for (int k = 0; k < this->m; k++)
-					tmp += this->mat[i][k] * x.mat[k][j];
-				new_mat.mat[i][j] = tmp;
+					tmp += this->mat[i][k] * x[k][j];
+				new_mat[i][j] = tmp;
 			}
 		this->m = x.m;
 		this->mat.resize(this->n, std::vector<int>(this->m));
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
-				this->mat[i][j] = new_mat.mat[i][j];
+				this->mat[i][j] = new_mat[i][j];
 		return this->mat;
 	}
 	void print(){
