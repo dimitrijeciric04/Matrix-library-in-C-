@@ -3,8 +3,8 @@
 
 class matrix{
 private:
-protected:
 	std::vector<std::vector<int>> mat;
+protected:
 	unsigned int n, m;
 public:
 	matrix(const unsigned int n, int val = 0) {
