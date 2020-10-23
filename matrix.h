@@ -2,36 +2,37 @@
 #include <thread>
 #include <vector>
 
+template<class T>
 class matrix{
 private:
-	std::vector<std::vector<int>> mat;
+	std::vector<std::vector<T>> mat;
 protected:
 	unsigned int n, m;
 public:
-	matrix(const unsigned int n, int val = 0) {
+	matrix(const unsigned int n, T val = 0) {
 		if (n == 0) throw "Matrix size can not be 0";
-		this->mat.resize(n, std::vector<int>(n, val));
+		this->mat.resize(n, std::vector<T>(n, val));
 		this->n = n;
 		this->m = n;
 	}
-	matrix(const unsigned int n, const unsigned int m, int val = 0) {
+	matrix(const unsigned int n, const unsigned int m, T val = 0) {
 		if (n == 0 || m == 0) throw "Matrix size can not be 0";
-		this->mat.resize(n, std::vector<int>(m, val));
+		this->mat.resize(n, std::vector<T>(m, val));
 		this->n = n;
 		this->m = m;
 	}
-	matrix(const std::vector<std::vector<int>> &x){
+	matrix(const std::vector<std::vector<T>> &x){
 		if (x.size() == 0) throw "Matrix size can not be 0";
-		this->mat.resize(x.size(), std::vector<int>(x[0]));
+		this->mat.resize(x.size(), std::vector<T>(x[0]));
 		this->n = x.size(), 
 		this->m = x[0].size();
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				this->mat[i][j] = x[i][j];
 	}
-	matrix operator=(const matrix &x){
+	matrix<T> operator=(const matrix<T> &x){
 		this->n = x.n, this->m = x.m;
-		this->mat.resize(this->n, std::vector<int>(this->m));
+		this->mat.resize(this->n, std::vector<T>(this->m));
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				this->mat[i][j] = x.mat[i][j];
@@ -41,16 +42,16 @@ public:
 		if (x > this->n) throw "Index is too big";
 		return this->mat[x];
 	}
-	matrix operator+(matrix &x){
+	matrix<T> operator+(matrix<T> &x){
 		if (this->n != x.n || this->m != x.m)
 			throw "You can not add matrices with different size\n";
-		matrix new_mat(this->n, this->m);
+		matrix<T> new_mat(this->n, this->m);
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				new_mat[i][j] = this->mat[i][j] + x[i][j];
 		return new_mat;
 	}
-	matrix operator+=(matrix &x){
+	matrix<T> operator+=(matrix<T> &x){
 		if (this->n != x.n || this->m != x.m)
 			throw "You can not add matrices with different size\n";
 		for (int i = 0; i < this->n; i++)
@@ -58,22 +59,22 @@ public:
 				this->mat[i][j] += x[i][j];
 		return this->mat;
 	}
-	matrix operator*(int x){
-		matrix new_mat(this->n, this->m);
+	matrix<T> operator*(T x){
+		matrix<T> new_mat(this->n, this->m);
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				new_mat[i][j] = this->mat[i][j] * x;
 		return new_mat;
 	}
-	matrix operator*=(int x){
+	matrix<T> operator*=(T x){
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				this->mat[i][j] *= x;
 		return this->mat;
 	}
 private:
-	static void process(matrix &new_mat, matrix &a, matrix &b, int i, int n, int m){
-		int tmp;
+	static void process(matrix<T> &new_mat, matrix<T> &a, matrix<T> &b, int i, int n, int m){
+		T tmp;
 		for (int j = 0; j < n; j++){
 			tmp = 0;
 			for (int k = 0; k < m; k++)
@@ -82,10 +83,10 @@ private:
 		}
 	}
 public:
-	matrix operator*(matrix &x){
+	matrix operator*(matrix<T> &x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
-		matrix new_mat(this->n, x.m), tmp_mat(this->mat);
+		matrix<T> new_mat(this->n, x.m), tmp_mat(this->mat);
 		std::vector<std::thread> threads(this->n);
 		for (int i = 0; i < this->n; i++)
 			threads[i] = std::thread(std::ref(process), std::ref(new_mat), 
@@ -104,10 +105,10 @@ public:
 			threads[i].join();
 		return new_mat;
 	}
-	matrix operator*=(matrix &x){
+	matrix operator*=(matrix<T> &x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
-		matrix new_mat(this->n, x.m, 0), tmp_mat(this->mat);
+		matrix<T> new_mat(this->n, x.m), tmp_mat(this->mat);
 		std::vector<std::thread> threads(this->n);
 		for (int i = 0; i < this->n; i++)
 			threads[i] = std::thread(std::ref(process), std::ref(new_mat), 
