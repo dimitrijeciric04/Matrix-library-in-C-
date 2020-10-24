@@ -38,7 +38,7 @@ public:
 				this->mat[i][j] = x.mat[i][j];
 		return this->mat;
 	}
-	std::vector<int>& operator[](const unsigned int &x){
+	std::vector<T>& operator[](const unsigned int &x){
 		if (x > this->n) throw "Index is too big";
 		return this->mat[x];
 	}
