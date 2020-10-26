@@ -58,14 +58,14 @@ public:
 				this->mat[i][j] += x[i][j];
 		return this->mat;
 	}
-	matrix operator*(double x){
+	matrix operator*(const double &x){
 		matrix new_mat(this->n, this->m);
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				new_mat[i][j] = this->mat[i][j] * x;
 		return new_mat;
 	}
-	matrix operator*=(double x){
+	matrix operator*=(const double &x){
 		for (int i = 0; i < this->n; i++)
 			for (int j = 0; j < this->m; j++)
 				this->mat[i][j] *= x;
@@ -82,7 +82,7 @@ private:
 		}
 	}
 public:
-	matrix operator*(matrix &x){
+	matrix operator*(matrix x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
 		matrix new_mat(this->n, x.m), tmp_mat(this->mat);
@@ -104,7 +104,7 @@ public:
 			threads[i].join();
 		return new_mat;
 	}
-	matrix operator*=(matrix &x){
+	matrix operator*=(matrix x){
 		if (this->m != x.n) 
 			throw "Matrix multiplication is not supported for this matrices\n";
 		matrix new_mat(this->n, x.m), tmp_mat(this->mat);
@@ -171,7 +171,7 @@ public:
 		for (int i = 0; i < x.n; i++)
 			result += x[0][i] * determinant(x ^ std::make_pair(0, i)) * pow(-1, i);
 		return result;
-	}
+	} 
 	double determinant(){return determinant(this->mat);}
 	void print(){
 		for (int i = 0; i < this->n; i++){
