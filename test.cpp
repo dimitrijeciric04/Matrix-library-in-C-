@@ -6,16 +6,17 @@ int random_number(){return rand() % 1000;}
 
 int main(){
 
-	int n = 100, m = 100;
+	int n = 5, m = 5;
 	//cin >> n >> m;
-	vector<vector<int>> v1(n, vector<int>(m)), v2(n, vector<int>(m));
+	vector<vector<double>> v1(n, vector<double>(m)), v2(n, vector<double>(m));
 	srand(time(NULL));
 
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++){
-			v1[i][j] = random_number();
-			v2[i][j] = random_number();
+			v1[i][j] = int(random_number());
+			v2[i][j] = int(random_number());
 		}
+	
 	/*
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++)
@@ -25,10 +26,18 @@ int main(){
 			cin >> v2[i][j];
 	*/
 
-	matrix<int> a(v1), b(v2), c(n, m);
+	matrix a(v1), b(v2), c(n, m);
 	auto t1 = chrono::high_resolution_clock::now();
-	c = a;
-	c *= b;
+	try{
+		cout << endl;
+		cout << a.determinant() << endl;
+		c = b;
+		c *= b;
+		c.print();
+		a.print();
+	}catch(char const* msg){
+		cout << msg << endl;
+	}
 	auto t2 = chrono::high_resolution_clock::now();
 	cout << chrono::duration_cast<std::chrono::microseconds>( t2 - t1).count() << endl;
 	//c.print();
