@@ -194,6 +194,7 @@ private:
 public:
 	matrix operator~(){ // inverse of matrix
 		double det = this->determinant();
+		if (det == 0) throw "Can not calculate inverse of matrix with 0 determinant!";
 		matrix inverse(this->n, this->m), this_mat(this->mat);
 		std::vector<std::thread> threads(this->n);
 		for (int i = 0; i < this->n; i++)
