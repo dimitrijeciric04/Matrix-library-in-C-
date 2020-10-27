@@ -6,7 +6,7 @@ int random_number(){return rand() % 1000;}
 
 int main(){
 
-	int n = 5, m = 5;
+	int n = 9, m = 9;
 	//cin >> n >> m;
 	vector<vector<double>> v1(n, vector<double>(m)), v2(n, vector<double>(m));
 	srand(time(NULL));
@@ -29,18 +29,13 @@ int main(){
 	matrix a(v1), b(v2), c(n, m);
 	auto t1 = chrono::high_resolution_clock::now();
 	try{
-		cout << endl;
-		cout << a.determinant() << endl;
-		c = b;
-		c *= b;
-		c.print();
-		a.print();
+		a = (~a);
 	}catch(char const* msg){
 		cout << msg << endl;
 	}
 	auto t2 = chrono::high_resolution_clock::now();
 	cout << chrono::duration_cast<std::chrono::microseconds>( t2 - t1).count() << endl;
-	//c.print();
+	a.print();
 
 	return 0;
 }
