@@ -9,19 +9,19 @@ protected:
 	unsigned int n, m;
 public:
 	matrix(const unsigned n) {
-		if (n == 0) throw "Matrix size can not be 0";
+		if (n == 0) throw "Matrix size can not be 0\n";
 		this->mat.resize(n, std::vector<double>(n));
 		this->n = n;
 		this->m = n;
 	}
 	matrix(const unsigned n, const unsigned m) {
-		if (n == 0 || m == 0) throw "Matrix size can not be 0";
+		if (n == 0 || m == 0) throw "Matrix size can not be 0\n";
 		this->mat.resize(n, std::vector<double>(m));
 		this->n = n;
 		this->m = m;
 	}
 	matrix(const std::vector<std::vector<double>> x){
-		if (x.size() == 0) throw "Matrix size can not be 0";\
+		if (x.size() == 0) throw "Matrix size can not be 0\n";
 		this->mat.resize(x.size(), std::vector<double>(x[0]));
 		this->n = x.size(), 
 		this->m = x[0].size();
@@ -169,7 +169,7 @@ public:
 private:
 	double determinant(matrix x){
 		if (x.n != x.m)
-			throw "Determinant is not supported for non-square matrix!";
+			throw "Determinant is not supported for non-square matrix!\n";
 		if (x.n == 1) return x[0][0];
 		if (x.n == 2) return x[0][0] * x[1][1] - x[0][1] * x[1][0];
 		double result = 0;
@@ -194,7 +194,7 @@ private:
 public:
 	matrix operator~(){ // inverse of matrix
 		double det = this->determinant();
-		if (det == 0) throw "Can not calculate inverse of matrix with 0 determinant!";
+		if (det == 0) throw "Can not calculate inverse of matrix with 0 determinant!\n";
 		matrix inverse(this->n, this->m), this_mat(this->mat);
 		std::vector<std::thread> threads(this->n);
 		for (int i = 0; i < this->n; i++)
